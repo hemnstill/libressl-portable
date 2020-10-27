@@ -7,21 +7,6 @@ environment:
   matrix:
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
       GENERATOR: Visual Studio 16 2019
-      ARCHITECTURE: Win32
-      CONFIG: Release
-      SHARED_LIBS: ON
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-      GENERATOR: Visual Studio 16 2019
-      ARCHITECTURE: Win32
-      CONFIG: Release
-      SHARED_LIBS: OFF
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-      GENERATOR: Visual Studio 16 2019
-      ARCHITECTURE: x64
-      CONFIG: Release
-      SHARED_LIBS: ON
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-      GENERATOR: Visual Studio 16 2019
       ARCHITECTURE: x64
       CONFIG: Release
       SHARED_LIBS: OFF
@@ -42,14 +27,10 @@ before_build:
 build_script:
   - cmake --build . --config %CONFIG%
 
-test_script:
-  - ctest -C %CONFIG% --timeout 150 --output-on-failure
-
 on_failure:
   - 7z a Testing.zip Testing
   - appveyor PushArtifact Testing.zip
 
 artifacts:
-  - path: build\Testing
-    name: Testing
-    type: zip
+  - path: build\apps\openssl\Release\
+    name: openssl
